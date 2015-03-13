@@ -44,13 +44,15 @@ table.lotteria > tbody > tr > td {
 #placeholder {
     position: relative;
     width: 50%;
-    height: 50%;
+    height: 60%;
     padding: 10%;
     margin: auto;
 }
 
 .bottom {
-    position: absolute;
-    bottom: 0;
-    margin-bottom: 5%;
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* margin-bottom: 5%; */
+    padding: 5%;
+    margin-top: 5%;
 }
