@@ -13,8 +13,8 @@
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/lotteria.css">
+
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sprintf/1.0.1/sprintf.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 8]>
@@ -23,6 +23,7 @@
 
         <!-- Add your site or application content here -->
         <div id="placeholder">
+            <div class="main">
             <p>Ciao, questa è una pagina inutile che serve soltanto a generare tagliandi per la lotteria.</p>
             <p>Ricaricami specificando come parametri nell'URL:
                 <dl>
@@ -44,6 +45,7 @@
                 Per esempio: <a href="?num=1000&cols=5&rows=7&start=0">link</a>.
             </p>
 
+            </div>
             <div class="bottom">
                 <hr/>
                 <small>
@@ -57,6 +59,7 @@
             </div>
         </div>
 
+        <script src="js/vendor/sprintf.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
