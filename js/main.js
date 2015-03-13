@@ -1,6 +1,24 @@
 $.urlParam = function(name){
     var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-    return results[1] || 0;
+    if (!(results == null )) return results[1];
+    return undefined;
+}
+
+$._urlParamAsInt = function(name, base){
+    if (typeof base === 'undefined') { base = 10; }
+
+    var res = $.urlParam(name);
+    if (res == null) return undefined;
+    res=parseInt(res, base);
+    if(isNaN(res)) return undefined;
+    return res;
+}
+
+
+$.urlParamAsInt = function(name, base){
+    var res=$._urlParamAsInt(name, base);
+    console.log(name);console.log(res);
+    return res;
 }
 
 function newTable(cols) {
@@ -16,7 +34,11 @@ function newTable(cols) {
     return [t,tb];
 }
 
-function genLotteria(num, cols, rows) {
+function genLotteria(num, cols, rows, start) {
+    if (typeof cols  === 'undefined') { cols  = 5; }
+    if (typeof rows  === 'undefined') { rows  = 7; }
+    if (typeof start === 'undefined') { start = 1; }
+
     var mod=cols*rows;
     var num=num+mod-1-(num-1)%mod;
 
@@ -37,11 +59,11 @@ function genLotteria(num, cols, rows) {
 
         var tr=document.createElement('tr');
         tb.appendChild(tr);
-        for(var j=1; j<=cols; j++) {
+        for(var j=0; j<cols; j++) {
             // r.push(i+j);
             td=document.createElement('td');
             // $(td).text(i+j);
-            $(td).text(sprintf("%0"+numberOfDigits+"i",i+j));
+            $(td).text(sprintf("%0"+numberOfDigits+"i",i+j+start));
             tr.appendChild(td);
         }
 
@@ -55,16 +77,16 @@ function genLotteria(num, cols, rows) {
     return cont;
 }
 
-function genLotteriaFromURL() {
-    var num=parseInt($.urlParam('num'),10);
-    var cols=parseInt($.urlParam('cols'),10);
-    var rows=parseInt($.urlParam('rows'),10);
-
-    return genLotteria(num, cols, rows);
-}
 
 $(function() {
-    var cont=genLotteriaFromURL();
+    var num=$.urlParamAsInt('num');
+    var cols=$.urlParamAsInt('cols');
+    var rows=$.urlParamAsInt('rows');
+    var start=$.urlParamAsInt('start');
+
+    if (num == null) return;
+
+    cont=genLotteria(num, cols, rows, start);
 
     $('body').replaceWith($('<body>').append($(cont)));
 });

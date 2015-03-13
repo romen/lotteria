@@ -26,18 +26,22 @@
             <p>Ciao, questa è una pagina inutile che serve soltanto a generare tagliandi per la lotteria.</p>
             <p>Ricaricami specificando come parametri nell'URL:
                 <dl>
-                    <dt>cols</dt>
-                    <dd>Numero di colonne per pagina</dd>
+                    <dt><b>num</b></dt>
+                    <dd>Numero totale di tagliandi.</dd>
 
-                    <dt>rows</dt>
-                    <dd>Numero di righe per pagina</dd>
+                    <dt><i>cols</i></dt>
+                    <dd>Numero di colonne per pagina. <i>(opzionale, default 5)</i></dd>
 
-                    <dt>num</dt>
-                    <dd>Numero totale di tagliandi</dd>
+                    <dt><i>rows</i></dt>
+                    <dd>Numero di righe per pagina. <i>(opzionale, default 7)</i></dd>
+
+                    <dt><i>start</i></dt>
+                    <dd>Il numero sul primo tagliando. <i>(opzionale, default 1)</i></dd>
+
                 </dl>
             </p>
             <p>
-                Per esempio: <a href="?cols=5&rows=7&num=1000">link</a>
+                Per esempio: <a href="?num=1000&cols=5&rows=7&start=0">link</a>
             </p>
 
             <div class="bottom">
