@@ -60,9 +60,7 @@ function genLotteria(num, cols, rows, start) {
         var tr=document.createElement('tr');
         tb.appendChild(tr);
         for(var j=0; j<cols; j++) {
-            // r.push(i+j);
             td=document.createElement('td');
-            // $(td).text(i+j);
             $(td).text(sprintf("%0"+numberOfDigits+"i",i+j+start));
             tr.appendChild(td);
         }
@@ -77,6 +75,14 @@ function genLotteria(num, cols, rows, start) {
     return cont;
 }
 
+function async(f, cb, delay){
+    if(delay==null) { delay=0; }
+    window.setTimeout(function(){
+        f();
+        if (cb) {cb();}
+    }, delay);
+}
+
 
 $(function() {
     var num=$.urlParamAsInt('num');
@@ -86,7 +92,17 @@ $(function() {
 
     if (num == null) return;
 
-    cont=genLotteria(num, cols, rows, start);
+    $('#placeholder > .main').html(
+        '<p>Elaborazione in corso...</p>');
 
-    $('body').replaceWith($('<body>').append($(cont)));
+    var container;
+    async(function(){
+        console.log("starting genLotteria");
+        container=genLotteria(num, cols, rows, start);
+    }, function() { // callback
+        console.log(container);
+        console.log("replacing body");
+        $('body').replaceWith($('<body>').append(container));
+        console.log("done");
+    }, 500);
 });
