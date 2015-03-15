@@ -53,3 +53,15 @@ table.lotteria > tbody > tr > td {
     padding: 5%;
     margin-top: 5%;
 }
+
+#progressbar {
+    position: relative;
+}
+#progressbar .progress-label {
+    position: absolute;
+    left: 30%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
+}
+

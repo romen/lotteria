@@ -48,6 +48,12 @@ function genLotteria(num, cols, rows, start, cb) {
     cont.id='container';
 
     (function(cb) {
+        var progressBar= $('#progressbar')
+            , updateProgress = function(value) {
+                // console.log('progress: '+value);
+                progressBar.progressbar("option", "value", value);
+            };
+
         var mainLoop = function(i) {
             if((i/cols)%rows==0) {
                 ret = newTable(cols); t=ret[0]; tb=ret[1];
@@ -79,6 +85,7 @@ function genLotteria(num, cols, rows, start, cb) {
 
                 i+= cols;
                 setTimeout(looper, 0);
+                updateProgress(i);
             } else { // loop ended
                 console.log('looper ended');
                 cb();
@@ -101,7 +108,27 @@ $(function() {
     if (num == null) return;
 
     $('#placeholder > .main').html(
-        '<p>Elaborazione in corso...</p>');
+        '<div id="progressbar"><div class="progress-label"></div></div>');
+
+    var progressBar=$('#progressbar')
+        , progressLabel=$('#progressbar .progress-label');
+
+    (function(){
+        var points=0, pb_last_ts=0;
+        progressBar.progressbar({
+            value: 0,
+            max: num,
+            change: function(){
+                var pb_ts=new Date().getTime();
+                if (pb_ts-pb_last_ts>=300){
+                    pb_last_ts=pb_ts;
+                    progressLabel.text('Elaborazione in corso' +
+                                    Array(1+points).join('.'));
+                    points=(points+1)%4;
+                }
+            }
+        });
+    })();
 
     console.log("starting genLotteria");
     var container=genLotteria(num, cols, rows, start
