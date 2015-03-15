@@ -34,55 +34,63 @@ function newTable(cols) {
     return [t,tb];
 }
 
-function genLotteria(num, cols, rows, start) {
+function genLotteria(num, cols, rows, start, cb) {
     if (typeof cols  === 'undefined') { cols  = 5; }
     if (typeof rows  === 'undefined') { rows  = 7; }
     if (typeof start === 'undefined') { start = 1; }
 
-    var mod=cols*rows;
-    var num=num+mod-1-(num-1)%mod;
+    var mod=cols*rows
+        , num=num+mod-1-(num-1)%mod
+        , numberOfDigits=parseInt(Math.floor(Math.log(num) / Math.LN10 + 1), 10)
+        , t, tb
+        , cont=document.createElement('div');
 
-    var numberOfDigits=parseInt(Math.floor(Math.log(num) / Math.LN10 + 1), 10);
+    cont.id='container';
 
-    var cont=document.createElement('div'); $(cont).attr('id', 'container');
+    (function(cb) {
+        var mainLoop = function(i) {
+            if((i/cols)%rows==0) {
+                ret = newTable(cols); t=ret[0]; tb=ret[1];
+                page = document.createElement('div');
+                $(page).attr('class', 'A4Portrait');
+                page.appendChild(t);
+                cont.appendChild(page);
+            }
 
-    var t; var tb;
+            var tr=document.createElement('tr');
+            tb.appendChild(tr);
+            for(var j=0; j<cols; j++) {
+                td=document.createElement('td');
+                $(td).text(sprintf("%0"+numberOfDigits+"i",i+j+start));
+                tr.appendChild(td);
+            }
 
-    for(var i=0; i<num; i+=cols) {
-        if((i/cols)%rows==0) {
-            ret = newTable(cols); t=ret[0]; tb=ret[1];
-            page = document.createElement('div');
-            $(page).attr('class', 'A4Portrait');
-            page.appendChild(t);
-            cont.appendChild(page);
-        }
+            if((i/cols)%rows==rows-1) {
+                pb=document.createElement('div'); $(pb).attr('class', 'page-break');
+                pb.appendChild(document.createElement('br'));
+                cont.appendChild(pb);
+            }
+        };
 
-        var tr=document.createElement('tr');
-        tb.appendChild(tr);
-        for(var j=0; j<cols; j++) {
-            td=document.createElement('td');
-            $(td).text(sprintf("%0"+numberOfDigits+"i",i+j+start));
-            tr.appendChild(td);
-        }
+        var i=0;
+        var looper = function() {
+            if(i<num) {
+                mainLoop(i);
 
-        if((i/cols)%rows==rows-1) {
-            pb=document.createElement('div'); $(pb).attr('class', 'page-break');
-            pb.appendChild(document.createElement('br'));
-            cont.appendChild(pb);
-        }
-    }
+                i+= cols;
+                setTimeout(looper, 0);
+            } else { // loop ended
+                console.log('looper ended');
+                cb();
+            }
+            return;
+        };
+        console.log('looper starting');
+        looper();
+    } )(cb);
 
     return cont;
 }
-
-function async(f, cb, delay){
-    if(delay==null) { delay=0; }
-    window.setTimeout(function(){
-        f();
-        if (cb) {cb();}
-    }, delay);
-}
-
 
 $(function() {
     var num=$.urlParamAsInt('num');
@@ -95,14 +103,12 @@ $(function() {
     $('#placeholder > .main').html(
         '<p>Elaborazione in corso...</p>');
 
-    var container;
-    async(function(){
-        console.log("starting genLotteria");
-        container=genLotteria(num, cols, rows, start);
-    }, function() { // callback
-        console.log(container);
-        console.log("replacing body");
-        $('body').replaceWith($('<body>').append(container));
-        console.log("done");
-    }, 500);
+    console.log("starting genLotteria");
+    var container=genLotteria(num, cols, rows, start
+        , function() { // callback
+            console.log(container);
+            console.log("replacing body");
+            $('body').replaceWith($('<body>').append(container));
+            console.log("done");
+          });
 });
