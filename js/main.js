@@ -20,3 +20,7 @@ $.urlParamAsInt = function(name, base){
     return res;
 }
 
+function isInteger(n) {
+    var _n=parseInt(n);
+    return !isNaN(_n) && isFinite(_n);
+}
