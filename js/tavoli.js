@@ -1,7 +1,7 @@
 function tavoli(t,p) {
     var b=(p-(t%p))%p, a=(t-b*(p-1))/p;
 
-    if(a>0 && b>=0 && a>b)
+    if(a>0 && b>=0 && a>=b)
         return [a,b];
     return null;
 }
