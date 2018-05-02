@@ -1,7 +1,14 @@
+/* Import Font from Google Fonts */
+@import url('https://fonts.googleapis.com/css?family=Gochi+Hand');
+
 table.lotteria {
     text-decoration: underline;
     font-size: 30pt;
+    /*
     font-family: "Liberation Sans-serif";
+    */
+    font-family: 'Gochi Hand', cursive;
+
 
     margin: auto;
     width: 100%;
